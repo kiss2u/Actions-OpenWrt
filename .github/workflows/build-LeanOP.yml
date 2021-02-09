@@ -18,8 +18,8 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
-    watch:
-      types: started
+  watch:
+    types: started
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
@@ -54,7 +54,6 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-        curl -k --data chat_id=${{ secrets.TELEGRAM_CHAT_ID }} --data "text=Build Lean's x64 OP completed!" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
 
     - name: Clone source code
       working-directory: /workdir
@@ -165,7 +164,7 @@ jobs:
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         echo "::set-output name=status::success"
-        curl -k --data chat_id=${{ secrets.TELEGRAM_CHAT_ID }} --data "text=Build Lean's x64 OP completed!" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+        curl -k --data chat_id=${{ secrets.TELEGRAM_CHAT_ID }} --data "text=The compile of Lean's x64 OP firmware has completed on $(date +"%Y.%m.%d-%H%M"), and can be reached at ${{ steps.wetransfer.outputs.url }}!" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
